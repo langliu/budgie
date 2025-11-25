@@ -1,0 +1,10 @@
+{
+  "cSpell.words": [
+    "dotenv",
+    "esbuild",
+    "hono",
+    "libsql",
+    "orpc",
+    "workerd"
+  ]
+}
