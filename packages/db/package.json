@@ -1,6 +1,15 @@
 {
-  "name": "@budgie/db",
-  "type": "module",
+  "dependencies": {
+    "@libsql/client": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "libsql": "catalog:",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@budgie/config": "workspace:*",
+    "drizzle-kit": "^0.31.2"
+  },
   "exports": {
     ".": {
       "default": "./src/index.ts"
@@ -9,22 +18,13 @@
       "default": "./src/*.ts"
     }
   },
-  "scripts": {
-    "db:push": "drizzle-kit push",
-    "db:generate": "drizzle-kit generate"
-  },
-  "devDependencies": {
-    "drizzle-kit": "^0.31.2",
-    "@budgie/config": "workspace:*"
-  },
+  "name": "@budgie/db",
   "peerDependencies": {
     "typescript": "^5"
   },
-  "dependencies": {
-    "drizzle-orm": "catalog:",
-    "@libsql/client": "catalog:",
-    "libsql": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "^4.1.11"
-  }
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push"
+  },
+  "type": "module"
 }

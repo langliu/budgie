@@ -1,17 +1,17 @@
-import type { Context as HonoContext } from "hono";
-import { auth } from "@budgie/auth";
+import { auth } from '@budgie/auth'
+import type { Context as HonoContext } from 'hono'
 
 export type CreateContextOptions = {
-	context: HonoContext;
-};
-
-export async function createContext({ context }: CreateContextOptions) {
-	const session = await auth.api.getSession({
-		headers: context.req.raw.headers,
-	});
-	return {
-		session,
-	};
+  context: HonoContext
 }
 
-export type Context = Awaited<ReturnType<typeof createContext>>;
+export async function createContext({ context }: CreateContextOptions) {
+  const session = await auth.api.getSession({
+    headers: context.req.raw.headers,
+  })
+  return {
+    session,
+  }
+}
+
+export type Context = Awaited<ReturnType<typeof createContext>>

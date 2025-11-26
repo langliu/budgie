@@ -1,5 +1,21 @@
 {
-  "name": "@budgie/api",
+  "dependencies": {
+    "@ai-sdk/google": "catalog:",
+    "@budgie/auth": "workspace:*",
+    "@budgie/db": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "ai": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@budgie/config": "workspace:*"
+  },
   "exports": {
     ".": {
       "default": "./src/index.ts"
@@ -8,26 +24,10 @@
       "default": "./src/*.ts"
     }
   },
-  "type": "module",
-  "scripts": {},
-  "devDependencies": {
-    "@budgie/config": "workspace:*"
-  },
+  "name": "@budgie/api",
   "peerDependencies": {
     "typescript": "^5"
   },
-  "dependencies": {
-    "@orpc/server": "catalog:",
-    "@orpc/client": "catalog:",
-    "@orpc/openapi": "catalog:",
-    "@orpc/zod": "catalog:",
-    "hono": "catalog:",
-    "drizzle-orm": "catalog:",
-    "ai": "catalog:",
-    "@ai-sdk/google": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "^4.1.11",
-    "@budgie/auth": "workspace:*",
-    "@budgie/db": "workspace:*"
-  }
+  "scripts": {},
+  "type": "module"
 }

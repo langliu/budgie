@@ -1,5 +1,13 @@
 {
-  "name": "@budgie/auth",
+  "dependencies": {
+    "@budgie/db": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@budgie/config": "workspace:*"
+  },
   "exports": {
     ".": {
       "default": "./src/index.ts"
@@ -8,18 +16,10 @@
       "default": "./src/*.ts"
     }
   },
-  "type": "module",
-  "scripts": {},
-  "devDependencies": {
-    "@budgie/config": "workspace:*"
-  },
+  "name": "@budgie/auth",
   "peerDependencies": {
     "typescript": "^5"
   },
-  "dependencies": {
-    "better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "^4.1.11",
-    "@budgie/db": "workspace:*"
-  }
+  "scripts": {},
+  "type": "module"
 }
