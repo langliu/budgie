@@ -10,6 +10,7 @@ const app = await alchemy('budgie')
 
 const db = await D1Database('database', {
   migrationsDir: 'packages/db/src/migrations',
+  name: 'budgie-database',
 })
 
 export const web = await TanStackStart('web', {
