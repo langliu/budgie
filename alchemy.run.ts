@@ -2,6 +2,14 @@ import alchemy from 'alchemy'
 import { D1Database, TanStackStart, Worker } from 'alchemy/cloudflare'
 import { config } from 'dotenv'
 
+const appEnv = process.env.APP_ENV
+if (appEnv) {
+  console.log(`Loading .env.${appEnv} files...`)
+  config({ path: `.env.${appEnv}` })
+  config({ path: `./apps/web/.env.${appEnv}` })
+  config({ path: `./apps/server/.env.${appEnv}` })
+}
+
 config({ path: './.env' })
 config({ path: './apps/web/.env' })
 config({ path: './apps/server/.env' })

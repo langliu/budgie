@@ -27,6 +27,7 @@
     "db:generate": "turbo -F @budgie/db db:generate",
     "db:push": "turbo -F @budgie/db db:push",
     "deploy": "alchemy deploy",
+    "deploy:prod": "APP_ENV=prod alchemy deploy",
     "destroy": "alchemy destroy",
     "dev": "alchemy dev",
     "dev:native": "turbo -F native dev",

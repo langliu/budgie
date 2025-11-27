@@ -36,7 +36,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
         name: 'viewport',
       },
       {
-        title: 'My App',
+        title: 'Budgie',
       },
     ],
   }),
