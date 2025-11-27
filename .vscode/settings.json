@@ -9,6 +9,7 @@
     "orpc",
     "subsecond",
     "unixepoch",
+    "uuidv",
     "workerd"
   ],
   "editor.formatOnSave": true,
