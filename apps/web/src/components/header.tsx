@@ -7,6 +7,7 @@ export default function Header() {
     { label: 'Dashboard', to: '/dashboard' },
     { label: 'Todos', to: '/todos' },
     { label: 'AI Chat', to: '/ai' },
+    { label: 'Short Videos', to: '/short-videos' },
   ] as const
 
   return (
