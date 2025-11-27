@@ -115,7 +115,7 @@ function TodosRoute() {
                       className={`${todo.completed ? 'line-through' : ''}`}
                       htmlFor={`todo-${todo.id}`}
                     >
-                      {todo.text}
+                      {todo.text} {new Date(todo.createdAt).toLocaleString()}
                     </label>
                   </div>
                   <Button

@@ -1,6 +1,6 @@
 import { db } from '@budgie/db'
 import { todo } from '@budgie/db/schema/todo'
-import { eq } from 'drizzle-orm'
+import { asc, desc, eq } from 'drizzle-orm'
 import z from 'zod'
 import { publicProcedure } from '../index'
 
@@ -19,7 +19,10 @@ export const todoRouter = {
       return await db.delete(todo).where(eq(todo.id, input.id))
     }),
   getAll: publicProcedure.handler(async () => {
-    return await db.select().from(todo)
+    return await db
+      .select()
+      .from(todo)
+      .orderBy(asc(todo.completed), desc(todo.createdAt))
   }),
 
   toggle: publicProcedure

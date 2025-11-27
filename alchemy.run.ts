@@ -17,6 +17,7 @@ export const web = await TanStackStart('web', {
   bindings: {
     VITE_SERVER_URL: process.env.VITE_SERVER_URL || '',
   },
+  compatibilityDate: '2025-11-18',
   cwd: 'apps/web',
   dev: {
     command: 'pnpm run dev',
@@ -34,6 +35,7 @@ export const server = await Worker('server', {
     ),
   },
   compatibility: 'node',
+  compatibilityDate: '2025-11-18',
   cwd: 'apps/server',
   dev: {
     port: 3000,
