@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { getUser } from '@/functions/get-user'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/short-videos')({
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/short-videos')({
 
 function ShortVideosRoute() {
   const [videoUrl, setVideoUrl] = useState('')
+  const navigate = useNavigate()
 
   const videosQuery = useQuery(orpc.shortVideo.list.queryOptions())
 
@@ -37,11 +39,26 @@ function ShortVideosRoute() {
     }),
   )
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (videoUrl.trim()) {
-      createMutation.mutate({ originalUrl: videoUrl })
+
+    if (!videoUrl.trim()) return
+
+    try {
+      const session = await getUser()
+      if (!session) {
+        toast.error('请先登录')
+        navigate({ to: '/login' })
+        return
+      }
+    } catch {
+      // 如果服务端中间件直接抛出重定向或错误，视为未登录
+      toast.error('请先登录')
+      navigate({ to: '/login' })
+      return
     }
+
+    createMutation.mutate({ originalUrl: videoUrl })
   }
 
   return (

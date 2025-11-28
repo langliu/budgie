@@ -9,88 +9,7 @@ import { eq } from 'drizzle-orm'
 import { v7 as uuidv7 } from 'uuid'
 import z from 'zod'
 import { publicProcedure } from '../index'
-
-interface VideoInfo {
-  cover: null | string
-  /** 视频标题 */
-  desc: string
-  music: string
-  pics: null
-  /** 解析后的无水印视频地址 */
-  playAddr: string
-  size: null
-  type: null
-  videos: null
-}
-
-/**
- * 解析短视频链接，获取无水印视频信息
- */
-async function getVideoInfo(link: string, token: string): Promise<VideoInfo> {
-  const backendApiUrl = 'https://proxy.layzz.cn/lyz/platAnalyse/'
-
-  const params = new URLSearchParams()
-  params.append('link', link)
-  params.append('token', token)
-
-  const response = await fetch(backendApiUrl, {
-    body: params,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    method: 'POST',
-  })
-
-  const data: {
-    code: string
-    data: VideoInfo
-  } = await response.json()
-
-  if (!response.ok || data.code !== '0001') {
-    throw new Error(`解析失败：${link}`)
-  }
-
-  return data.data
-}
-
-interface ParsedVideoDesc {
-  /** 视频标签列表 */
-  tags: string[]
-  /** 视频真正的标题 */
-  title: string
-}
-
-/**
- * 解析视频描述，分离标题和标签
- * @example
- * parseVideoDesc("猫猫凝视 #少女感 #二次元 #动漫")
- * // => { title: "猫猫凝视", tags: ["少女感", "二次元", "动漫"] }
- */
-function parseVideoDesc(desc: string): ParsedVideoDesc {
-  if (!desc) {
-    return { tags: [], title: '' }
-  }
-
-  // 匹配所有 #标签（支持中文、英文、数字、下划线）
-  const tagRegex = /#([\w\u4e00-\u9fa5]+)/g
-  const tags: string[] = []
-  let match: RegExpExecArray | null
-
-  // 使用显式赋值以避免在表达式中做赋值
-  while (true) {
-    match = tagRegex.exec(desc)
-    if (match === null) break
-    if (match[1]) {
-      tags.push(match[1])
-    }
-  }
-
-  // 移除所有标签，剩下的就是标题
-  const title = desc
-    .replace(/#[\w\u4e00-\u9fa5]+/g, '') // 移除标签
-    .replace(/\s+/g, ' ') // 合并多个空格
-    .trim()
-
-  return { tags, title }
-}
+import { getVideoInfo, parseVideoDesc } from '../utils'
 
 /**
  * 下载视频并上传到 R2
@@ -129,52 +48,6 @@ async function uploadVideoToR2(
   return {
     key,
     size: videoBuffer.byteLength,
-  }
-}
-
-/**
- * 下载封面并上传到 R2
- */
-async function uploadCoverToR2(
-  coverUrl: string,
-  fileName: string,
-): Promise<{ key: string; size: number } | null> {
-  if (!coverUrl) return null
-
-  try {
-    const coverResponse = await fetch(coverUrl, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      },
-    })
-
-    if (!coverResponse.ok) {
-      console.error(`下载封面失败: ${coverResponse.status}`)
-      return null
-    }
-
-    const contentType =
-      coverResponse.headers.get('content-type') || 'image/jpeg'
-    const coverBuffer = await coverResponse.arrayBuffer()
-
-    const timestamp = Date.now()
-    const ext = contentType.includes('png') ? 'png' : 'jpg'
-    const key = `covers/${timestamp}-${fileName}.${ext}`
-
-    await env.BUCKET.put(key, coverBuffer, {
-      httpMetadata: {
-        contentType,
-      },
-    })
-
-    return {
-      key,
-      size: coverBuffer.byteLength,
-    }
-  } catch (error) {
-    console.error('上传封面失败:', error)
-    return null
   }
 }
 
@@ -272,11 +145,6 @@ export const shortVideoRouter = {
       // 4. 上传视频到 R2
       const videoResult = await uploadVideoToR2(videoInfo.playAddr, fileName)
 
-      // 5. 上传封面到 R2（如果有）
-      const coverResult = videoInfo.cover
-        ? await uploadCoverToR2(videoInfo.cover, fileName)
-        : null
-
       // 6. 解析标题和标签
       const { title, tags } = parseVideoDesc(videoInfo.desc)
 
@@ -314,7 +182,6 @@ export const shortVideoRouter = {
 
       return {
         ...videoWithTopics,
-        coverUrl: coverResult ? `${baseUrl}/${coverResult.key}` : null,
         topics: videoWithTopics?.videoToTopics.map((vt) => vt.topic) ?? [],
         videoUrl: `${baseUrl}/${videoResult.key}`,
       }
