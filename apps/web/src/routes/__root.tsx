@@ -7,12 +7,18 @@ import {
   HeadContent,
   Outlet,
   Scripts,
+  useRouterState,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import type { orpc } from '@/utils/orpc'
 import Header from '../components/header'
 import appCss from '../index.css?url'
+
+// 不显示 Header 的路由路径
+const noHeaderRoutes = ['/login', '/register']
+
 export interface RouterAppContext {
   orpc: typeof orpc
   queryClient: QueryClient
@@ -43,17 +49,24 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 })
 
 function RootDocument() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const showHeader = !noHeaderRoutes.includes(pathname)
+
   return (
-    <html className="dark" lang="zh">
+    <html lang="zh" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <div className="grid h-svh grid-rows-[auto_1fr]">
-          <Header />
-          <Outlet />
-        </div>
-        <Toaster richColors />
+        <ThemeProvider>
+          <div
+            className={showHeader ? 'grid h-svh grid-rows-[auto_1fr]' : 'h-svh'}
+          >
+            {showHeader && <Header />}
+            <Outlet />
+          </div>
+          <Toaster richColors />
+        </ThemeProvider>
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools buttonPosition="bottom-right" position="bottom" />
         <Scripts />
