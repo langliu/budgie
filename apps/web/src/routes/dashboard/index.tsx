@@ -16,20 +16,20 @@ export const Route = createFileRoute('/dashboard/')({
 
 function DashboardIndex() {
   const { session } = Route.useRouteContext()
-  const models = useQuery(orpc.model.getAll.queryOptions())
-  const albums = useQuery(orpc.album.getAll.queryOptions())
+  const models = useQuery(orpc.model.getAll.queryOptions({ input: {} }))
+  const albums = useQuery(orpc.album.getAll.queryOptions({ input: {} }))
   const tags = useQuery(orpc.tag.getAll.queryOptions())
 
   const stats = [
     {
-      count: models.data?.length ?? 0,
+      count: models.data?.total ?? 0,
       description: '已添加的模特数量',
       href: '/dashboard/models',
       icon: User,
       title: '模特',
     },
     {
-      count: albums.data?.length ?? 0,
+      count: albums.data?.total ?? 0,
       description: '已创建的专辑数量',
       href: '/dashboard/albums',
       icon: BookImage,

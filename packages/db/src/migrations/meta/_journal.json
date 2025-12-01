@@ -21,6 +21,13 @@
       "tag": "0002_medical_salo",
       "version": "6",
       "when": 1764258668038
+    },
+    {
+      "breakpoints": true,
+      "idx": 3,
+      "tag": "0003_burly_ghost_rider",
+      "version": "6",
+      "when": 1764599602978
     }
   ],
   "version": "7"
