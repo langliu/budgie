@@ -22,6 +22,10 @@ const db = await D1Database('database', {
 })
 
 const bucket = await R2Bucket('storage', {
+  adopt: true,
+  dev: {
+    remote: true,
+  },
   name: 'budgie-storage',
 })
 

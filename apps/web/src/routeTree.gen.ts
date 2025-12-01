@@ -13,9 +13,17 @@ import { Route as TodosRouteImport } from './routes/todos'
 import { Route as ShortVideosRouteImport } from './routes/short-videos'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardTagsRouteImport } from './routes/dashboard/tags'
+import { Route as DashboardModelsIndexRouteImport } from './routes/dashboard/models/index'
+import { Route as DashboardAlbumsIndexRouteImport } from './routes/dashboard/albums/index'
+import { Route as DashboardModelsNewRouteImport } from './routes/dashboard/models/new'
+import { Route as DashboardModelsIdRouteImport } from './routes/dashboard/models/$id'
+import { Route as DashboardAlbumsNewRouteImport } from './routes/dashboard/albums/new'
+import { Route as DashboardAlbumsIdRouteImport } from './routes/dashboard/albums/$id'
 
 const TodosRoute = TodosRouteImport.update({
   id: '/todos',
@@ -37,14 +45,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AiRoute = AiRouteImport.update({
   id: '/ai',
   path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -52,69 +60,155 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardTagsRoute = DashboardTagsRouteImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardModelsIndexRoute = DashboardModelsIndexRouteImport.update({
+  id: '/models/',
+  path: '/models/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAlbumsIndexRoute = DashboardAlbumsIndexRouteImport.update({
+  id: '/albums/',
+  path: '/albums/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardModelsNewRoute = DashboardModelsNewRouteImport.update({
+  id: '/models/new',
+  path: '/models/new',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardModelsIdRoute = DashboardModelsIdRouteImport.update({
+  id: '/models/$id',
+  path: '/models/$id',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAlbumsNewRoute = DashboardAlbumsNewRouteImport.update({
+  id: '/albums/new',
+  path: '/albums/new',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAlbumsIdRoute = DashboardAlbumsIdRouteImport.update({
+  id: '/albums/$id',
+  path: '/albums/$id',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/ai': typeof AiRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/short-videos': typeof ShortVideosRoute
   '/todos': typeof TodosRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/albums/$id': typeof DashboardAlbumsIdRoute
+  '/dashboard/albums/new': typeof DashboardAlbumsNewRoute
+  '/dashboard/models/$id': typeof DashboardModelsIdRoute
+  '/dashboard/models/new': typeof DashboardModelsNewRoute
+  '/dashboard/albums': typeof DashboardAlbumsIndexRoute
+  '/dashboard/models': typeof DashboardModelsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/short-videos': typeof ShortVideosRoute
   '/todos': typeof TodosRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/albums/$id': typeof DashboardAlbumsIdRoute
+  '/dashboard/albums/new': typeof DashboardAlbumsNewRoute
+  '/dashboard/models/$id': typeof DashboardModelsIdRoute
+  '/dashboard/models/new': typeof DashboardModelsNewRoute
+  '/dashboard/albums': typeof DashboardAlbumsIndexRoute
+  '/dashboard/models': typeof DashboardModelsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/ai': typeof AiRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/short-videos': typeof ShortVideosRoute
   '/todos': typeof TodosRoute
+  '/dashboard/tags': typeof DashboardTagsRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/albums/$id': typeof DashboardAlbumsIdRoute
+  '/dashboard/albums/new': typeof DashboardAlbumsNewRoute
+  '/dashboard/models/$id': typeof DashboardModelsIdRoute
+  '/dashboard/models/new': typeof DashboardModelsNewRoute
+  '/dashboard/albums/': typeof DashboardAlbumsIndexRoute
+  '/dashboard/models/': typeof DashboardModelsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/ai'
     | '/dashboard'
+    | '/ai'
     | '/login'
     | '/register'
     | '/short-videos'
     | '/todos'
+    | '/dashboard/tags'
+    | '/dashboard/'
+    | '/dashboard/albums/$id'
+    | '/dashboard/albums/new'
+    | '/dashboard/models/$id'
+    | '/dashboard/models/new'
+    | '/dashboard/albums'
+    | '/dashboard/models'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/ai'
-    | '/dashboard'
     | '/login'
     | '/register'
     | '/short-videos'
     | '/todos'
+    | '/dashboard/tags'
+    | '/dashboard'
+    | '/dashboard/albums/$id'
+    | '/dashboard/albums/new'
+    | '/dashboard/models/$id'
+    | '/dashboard/models/new'
+    | '/dashboard/albums'
+    | '/dashboard/models'
   id:
     | '__root__'
     | '/'
-    | '/ai'
     | '/dashboard'
+    | '/ai'
     | '/login'
     | '/register'
     | '/short-videos'
     | '/todos'
+    | '/dashboard/tags'
+    | '/dashboard/'
+    | '/dashboard/albums/$id'
+    | '/dashboard/albums/new'
+    | '/dashboard/models/$id'
+    | '/dashboard/models/new'
+    | '/dashboard/albums/'
+    | '/dashboard/models/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   AiRoute: typeof AiRoute
-  DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ShortVideosRoute: typeof ShortVideosRoute
@@ -151,18 +245,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/ai': {
       id: '/ai'
       path: '/ai'
       fullPath: '/ai'
       preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -172,13 +266,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/tags': {
+      id: '/dashboard/tags'
+      path: '/tags'
+      fullPath: '/dashboard/tags'
+      preLoaderRoute: typeof DashboardTagsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/models/': {
+      id: '/dashboard/models/'
+      path: '/models'
+      fullPath: '/dashboard/models'
+      preLoaderRoute: typeof DashboardModelsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/albums/': {
+      id: '/dashboard/albums/'
+      path: '/albums'
+      fullPath: '/dashboard/albums'
+      preLoaderRoute: typeof DashboardAlbumsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/models/new': {
+      id: '/dashboard/models/new'
+      path: '/models/new'
+      fullPath: '/dashboard/models/new'
+      preLoaderRoute: typeof DashboardModelsNewRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/models/$id': {
+      id: '/dashboard/models/$id'
+      path: '/models/$id'
+      fullPath: '/dashboard/models/$id'
+      preLoaderRoute: typeof DashboardModelsIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/albums/new': {
+      id: '/dashboard/albums/new'
+      path: '/albums/new'
+      fullPath: '/dashboard/albums/new'
+      preLoaderRoute: typeof DashboardAlbumsNewRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/albums/$id': {
+      id: '/dashboard/albums/$id'
+      path: '/albums/$id'
+      fullPath: '/dashboard/albums/$id'
+      preLoaderRoute: typeof DashboardAlbumsIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
+interface DashboardRouteRouteChildren {
+  DashboardTagsRoute: typeof DashboardTagsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAlbumsIdRoute: typeof DashboardAlbumsIdRoute
+  DashboardAlbumsNewRoute: typeof DashboardAlbumsNewRoute
+  DashboardModelsIdRoute: typeof DashboardModelsIdRoute
+  DashboardModelsNewRoute: typeof DashboardModelsNewRoute
+  DashboardAlbumsIndexRoute: typeof DashboardAlbumsIndexRoute
+  DashboardModelsIndexRoute: typeof DashboardModelsIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardTagsRoute: DashboardTagsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardAlbumsIdRoute: DashboardAlbumsIdRoute,
+  DashboardAlbumsNewRoute: DashboardAlbumsNewRoute,
+  DashboardModelsIdRoute: DashboardModelsIdRoute,
+  DashboardModelsNewRoute: DashboardModelsNewRoute,
+  DashboardAlbumsIndexRoute: DashboardAlbumsIndexRoute,
+  DashboardModelsIndexRoute: DashboardModelsIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AiRoute: AiRoute,
-  DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ShortVideosRoute: ShortVideosRoute,
