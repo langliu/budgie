@@ -22,7 +22,7 @@
     "todo"
   ],
   "auth": "better-auth",
-  "packageManager": "pnpm",
+  "packageManager": "bun",
   "dbSetup": "d1",
   "api": "orpc",
   "webDeploy": "alchemy",

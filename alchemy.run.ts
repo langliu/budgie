@@ -17,6 +17,7 @@ config({ path: './apps/server/.env' })
 const app = await alchemy('budgie')
 
 const db = await D1Database('database', {
+  adopt: true,
   migrationsDir: 'packages/db/src/migrations',
   name: 'budgie-database',
 })
@@ -30,17 +31,24 @@ const bucket = await R2Bucket('storage', {
 })
 
 export const web = await TanStackStart('web', {
+  adopt: true,
   bindings: {
+    BETTER_AUTH_SECRET: alchemy.secret(process.env.BETTER_AUTH_SECRET),
+    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || '',
+    CORS_ORIGIN: process.env.CORS_ORIGIN || '',
+    DB: db,
     VITE_SERVER_URL: process.env.VITE_SERVER_URL || '',
   },
   compatibilityDate: '2025-11-18',
   cwd: 'apps/web',
   dev: {
-    command: 'pnpm run dev',
+    command: 'bun run dev',
   },
+  domains: ['budgie.langliu.top'],
 })
 
 export const server = await Worker('server', {
+  adopt: true,
   bindings: {
     BETTER_AUTH_SECRET: alchemy.secret(process.env.BETTER_AUTH_SECRET),
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || '',
@@ -59,6 +67,7 @@ export const server = await Worker('server', {
   dev: {
     port: 3000,
   },
+  domains: ['budgie-server.langliu.top'],
   entrypoint: 'src/index.ts',
 })
 

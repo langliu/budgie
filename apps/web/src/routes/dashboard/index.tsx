@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { BookImage, Tag, User } from 'lucide-react'
 import {
   Card,
@@ -8,10 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { getUser } from '@/functions/get-user'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/dashboard/')({
+  beforeLoad: async () => {
+    const session = await getUser()
+    return { session }
+  },
   component: DashboardIndex,
+  loader: async ({ context }) => {
+    if (!context.session) {
+      throw redirect({
+        to: '/login',
+      })
+    }
+  },
 })
 
 function DashboardIndex() {

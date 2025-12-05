@@ -1,16 +1,15 @@
+import { auth } from '@budgie/auth'
+import { redirect } from '@tanstack/react-router'
 import { createMiddleware } from '@tanstack/react-start'
-import { authClient } from '@/lib/auth-client'
 
 export const authMiddleware = createMiddleware().server(
   async ({ next, request }) => {
-    const session = await authClient.getSession({
-      fetchOptions: {
-        headers: request.headers,
-        throw: true,
-      },
+    const session = await auth.api.getSession({
+      headers: request.headers,
     })
-    return next({
-      context: { session },
-    })
+    if (!session) {
+      throw redirect({ to: '/login' })
+    }
+    return await next({ context: { session } })
   },
 )

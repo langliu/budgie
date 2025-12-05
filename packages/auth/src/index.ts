@@ -6,17 +6,17 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 
 export const auth = betterAuth<BetterAuthOptions>({
   advanced: {
+    // uncomment crossSubDomainCookies setting when ready to deploy and replace <your-workers-subdomain> with your actual workers subdomain
+    // https://developers.cloudflare.com/workers/wrangler/configuration/#workersdev
+    crossSubDomainCookies: {
+      domain: '.langliu.top',
+      enabled: true,
+    },
     defaultCookieAttributes: {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
     },
-    // uncomment crossSubDomainCookies setting when ready to deploy and replace <your-workers-subdomain> with your actual workers subdomain
-    // https://developers.cloudflare.com/workers/wrangler/configuration/#workersdev
-    // crossSubDomainCookies: {
-    //   enabled: true,
-    //   domain: "<your-workers-subdomain>",
-    // },
   },
   baseURL: env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {

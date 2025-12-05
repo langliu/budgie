@@ -34,7 +34,8 @@
       "!**/.alchemy",
       "!**/.svelte-kit",
       "!**/wrangler.jsonc",
-      "!**/.source"
+      "!**/.source",
+      "!**/bun.lock"
     ]
   },
   "formatter": {
